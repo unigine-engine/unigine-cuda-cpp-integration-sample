@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<asset version="2.22.0.0">
+	<guid>9e1b8a5ed33a5a3ec35a8e420235c9ee026da982</guid>
+	<type>world</type>
+	<hash>1cb45c9ca4b2817436d667e1e1918aa14ed8fbc9622b3d13e1907208563be0a4</hash>
+	<runtimes>
+		<runtime id="9e1b8a5ed33a5a3ec35a8e420235c9ee026da982" name="CUDA_mesh_dynamic.world" link="0"/>
+	</runtimes>
+	<parameters>
+		<parameter type="string" name="physics_settings_path"/>
+		<parameter type="string" name="render_settings_path"/>
+		<parameter type="string" name="script_name"/>
+		<parameter type="string" name="sound_settings_path"/>
+		<parameter type="string" name="viewports_settings"/>
+	</parameters>
+</asset>

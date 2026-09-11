@@ -1,0 +1,110 @@
+BaseMaterial <var_prefix=var texture_prefix=tex>
+{
+	Texture2D <source=opacity_depth>
+	Texture2D color = "core/textures/common/checker_d.texture"
+
+	Int num_elements <hidden=true>
+	Float4 camera_view_row_x <hidden=true>
+	Float4 camera_view_row_y <hidden=true>
+	Float4 camera_view_row_z <hidden=true>
+	Float4 camera_view_row_w <hidden=true>
+
+	Pass post
+	{
+		Compute=
+		#{
+			#include <core/materials/shaders/render/common.h>
+
+			// Number of particles to draw per group
+			// Must be kept in sync with CUDAStructuredBufferWrite.cpp
+			// The one in cuda_buffer_process may be different
+			#define NUM_GROUP 16
+
+			// sqrt(Particle size)
+			#define SIDE_SIZE 8
+
+			// Must be kept in sync with ProcessBuffer.cu
+			struct Particle
+			{
+				float3 position;
+				float life;
+				float3 velocity;
+				float align;
+			};
+			INIT_STRUCTURED_BUFFER(0, Particle, sb_particles);
+
+			// Screen Color texture to draw to
+			INIT_W_TEXTURE(0, tex_dest, RGBA16F, float4);
+
+			// Small optimization
+			SHARED float2 screen_position;
+			SHARED float4 view_pos;
+			SHARED float particle_depth;
+
+			MAIN_COMPUTE_BEGIN(NUM_GROUP, SIDE_SIZE * SIDE_SIZE, 1)
+
+				// Early exit if we encounter an overflow
+				int index = GROUP_ID.x * NUM_GROUP + GROUP_THREAD_ID.x;
+				if (index < var_num_elements)
+				{
+					Particle p = sb_particles[index];
+					float2 resolution = textureRWResolution(tex_dest);
+
+					// Particle position in Local (particle field) Space
+					float4 position = float4(p.position, 1.0f);
+
+					// Local Space -> View Space
+					// You likely want to use World matrix multiplied by View matrix and use that one here, instead of plain View matrix
+					// This small tweak will remove excessive computations from shader
+					view_pos.x = dot(var_camera_view_row_x, position);
+					view_pos.y = dot(var_camera_view_row_y, position);
+					view_pos.z = dot(var_camera_view_row_z, position);
+					view_pos.w = dot(var_camera_view_row_w, position);
+
+
+					// View Space -> Screen Space in pixels (0, 0 -> Render Size)
+					screen_position = positionToScreenUV(float4(view_pos.xyz, 1.0f));
+
+					float2 temp = mul(s_camera_projection, view_pos).zw;
+					particle_depth = temp.x / temp.y;
+
+					MEMORY_BARRIER_SHARED_SYNC;
+
+					if (!checkRange(screen_position.x, 0.0f, 1.0f) || !checkRange(screen_position.y, 0.0f, 1.0f))
+						return;
+
+					screen_position *= resolution;
+
+					// We want our particles to have origin at their center, not on the top left
+					const int offset = -SIDE_SIZE * SIDE_SIZE / 2;
+					float2 screen_position2 = screen_position + offset;
+
+					// Sample depth buffer to perform depth test
+					float screen_depth = TEXTURE_FETCH(tex_opacity_depth, screen_position2.xy).r;
+
+					// Depth test
+					if (particle_depth >= screen_depth)
+					{
+						int start_i = (GROUP_THREAD_ID.y % SIDE_SIZE) * SIDE_SIZE;
+						int start_j = (GROUP_THREAD_ID.y / SIDE_SIZE) * SIDE_SIZE;
+
+						// Calculate UVs, Sample color texture and Store the result
+						const float uv_scale = 1.0f / (SIDE_SIZE * SIDE_SIZE);
+						for (int i = start_i; i < start_i + SIDE_SIZE; i++)
+						{
+							for (int j = start_j; j < start_j + SIDE_SIZE; j++)
+							{
+								float2 uv = float2(i, j) * uv_scale;
+								float3 color = TEXTURE_LOAD(tex_color, uv).rgb;
+
+								float2 screen_pos = screen_position2 + int2(i, j);
+								TEXTURE_W_STORE(tex_dest, screen_pos, float4(color, 1.0f));
+							}
+						}
+					}
+				}
+				
+			MAIN_COMPUTE_END
+		#}
+	}
+}

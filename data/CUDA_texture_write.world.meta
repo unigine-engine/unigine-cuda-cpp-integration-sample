@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<asset version="2.22.0.0">
+	<guid>b0cee2c061312e50e91ff144e07c86f10d0fc804</guid>
+	<type>world</type>
+	<hash>ff09611b60f801329d03b1205e98e9a3a87b85414582439b96b26d304cb564bd</hash>
+	<runtimes>
+		<runtime id="b0cee2c061312e50e91ff144e07c86f10d0fc804" name="CUDA_texture_write.world" link="0"/>
+	</runtimes>
+	<parameters>
+		<parameter type="string" name="physics_settings_path"/>
+		<parameter type="string" name="render_settings_path"/>
+		<parameter type="string" name="script_name"/>
+		<parameter type="string" name="sound_settings_path"/>
+		<parameter type="string" name="viewports_settings"/>
+	</parameters>
+</asset>

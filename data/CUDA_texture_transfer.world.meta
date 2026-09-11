@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<asset version="2.22.0.0">
+	<guid>b9941c4ce7dd74f395cd2e90c8f3e0a1bda3dfd0</guid>
+	<type>world</type>
+	<hash>921ef2aa68c0a78763cf14d2305b28a0ef5a1615f69479ae4630ca94347936f1</hash>
+	<runtimes>
+		<runtime id="b9941c4ce7dd74f395cd2e90c8f3e0a1bda3dfd0" name="CUDA_texture_transfer.world" link="0"/>
+	</runtimes>
+	<parameters>
+		<parameter type="string" name="physics_settings_path"/>
+		<parameter type="string" name="render_settings_path"/>
+		<parameter type="string" name="script_name"/>
+		<parameter type="string" name="sound_settings_path"/>
+		<parameter type="string" name="viewports_settings"/>
+	</parameters>
+</asset>

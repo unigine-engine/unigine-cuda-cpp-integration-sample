@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<asset version="2.22.0.0">
+	<guid>cdc7016cf5dd7930846d605832711ced3ebc9605</guid>
+	<type>material</type>
+	<hash>c2e003f6e4b750341b855bca4fa2a227e2b6b4cf940246458375df4b05e31f29</hash>
+	<runtimes>
+		<runtime id="cdc7016cf5dd7930846d605832711ced3ebc9605" name="ScreenSpaceParticles" link="0" type="5"/>
+	</runtimes>
+</asset>

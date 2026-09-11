@@ -1,0 +1,13 @@
+{
+	"1dcd982b0b7b0eeb16bca6777f9f05dc4e50697b": "configs/default.controls",
+	"3e5f32c8db5ba2d1d5e1f3cc940cfb3c6399838c": "configs/default.user",
+	"6749ae43cdf3fab7a8029d0f7c55d6dfb851b393": "CUDA_structured_buffer_write.world",
+	"9e1b8a5ed33a5a3ec35a8e420235c9ee026da982": "CUDA_mesh_dynamic.world",
+	"9f4f48e9e8024ccbdc9975d567e586919b3c5af9": "cbox.mesh",
+	"a4672d26c0f8ca6d07be3f8a4a72cf33b71f75ca": "configs/editor.boot",
+	"a8b02a9117a948089c0e4afd60fdee7692b06aa1": "configs/default.global",
+	"a973aae500823df9311d6d11429d82d09fe0caf5": "ScreenSpaceParticles.basemat",
+	"b0cee2c061312e50e91ff144e07c86f10d0fc804": "CUDA_texture_write.world",
+	"b9941c4ce7dd74f395cd2e90c8f3e0a1bda3dfd0": "CUDA_texture_transfer.world",
+	"c468cd3a88349e99880f9ddebe873be18d8e509e": "configs/default.config"
+}
